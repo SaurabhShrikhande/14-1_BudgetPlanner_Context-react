@@ -4,14 +4,30 @@ import './App.css';
 import { useEffect } from 'react';
 
 export default function BudgetPlanner(){
+  
+   let total = 0;
+  function tot (){
+   total = 0;
+    contxt.arr.map((item ) => {
+          total = total + parseInt(item.cost);
+    })      
+      contxt.setremaining(2000 - total);   //Reamaining
+       contxt.setspant(total);
+  }
+
+
+  function spent(){
+
+  }
+
    const contxt = useContext(UserContext);
    useEffect(() => {
     if (localStorage.length !== 0){
       const data = JSON.parse(localStorage.getItem("localarr"));
-      contxt.setarr(data);
-
+       contxt.setarr(data);
+       
     }
-   //  const data = JSON.parse(localStorage.getItem("localarr")); 
+    // const data = JSON.parse(localStorage.getItem("localarr")); 
     // if(data){
     //  contxt.setarr(data);
     // }
@@ -27,6 +43,8 @@ export default function BudgetPlanner(){
                 contxt.setinputcost(0);
           }      
     }
+
+   
      
     function trim(idx){
         const filterarr = contxt.arr.filter((item) =>
@@ -34,22 +52,27 @@ export default function BudgetPlanner(){
        // const filterarr = contxt.arr.filter((item,id)=>id!=idx)
         contxt.setarr(filterarr);
         localStorage.setItem("localarr" , JSON.stringify(filterarr));
+        tot();
     }
 
     useEffect(() => {
     if(contxt.arr.length !== 0)  localStorage.setItem("localarr" , JSON.stringify(contxt.arr));
+     tot();
+     
   }, [contxt.arr])
 
     return(<div style={{margin:"5vh 5vw"}}>
         <h1>Saurabh Shrikhande Budget Planner</h1>
-         <label style={{fontSize:"20px"}}>Your Budget</label> 
+         {/* <label style={{fontSize:"20px"}}>Your Budget</label> 
          <input style={{margin:"5px" , fontSize:"20px"}} type="number" onChange ={(e) => contxt.setbudget(e.target.value)} value={contxt.budget} required/>
-        
+         */}
 
         <div style={{display:"flex", justifyContent:"space-between", width:""}}>
-        <h3 className="btn">Budget: Rs {contxt.budget}</h3>
-        <h3 className="btn" style={{color:"green"}}>Remaining Rs. - </h3>
-        <h3 className="btn" style={{color:"green" , backgroundColor:"#CFF4FC"}}>Spant far: </h3>
+        {/* <h3 className="btn">Budget: Rs {contxt.budget}</h3> */}
+        <h3 className="btn">Budget: Rs 2000</h3>
+        <h3 className="btn" style={{color:"green"}}>Remaining Rs.
+        {contxt.remaining}  </h3>
+        <h3 className="btn" style={{color:"green" , backgroundColor:"#CFF4FC"}}>Spant far: {contxt.spant}</h3>
         </div>
 
         <h3>Expenses</h3>

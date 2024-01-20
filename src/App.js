@@ -4,7 +4,9 @@ import BudgetPlanner from './Budgetplanner'
 import { useState } from 'react';
 
 function App() {
-   let [budget, setbudget ] = useState(0);
+   let [budget, setbudget ] = useState(2000);  
+   let [remaining , setremaining] = useState(0);
+   let [spant , setspant] = useState(0);
    let [inputnm , setinputnm] = useState("");
    let [inputcost , setinputcost] = useState(0);
    let [arr , setarr] = useState([]);
@@ -21,7 +23,11 @@ function App() {
       inputcost,
       setinputcost,
       arr,
-      setarr
+      setarr,
+      spant,
+      setspant,
+      remaining,
+      setremaining
      }}>
       
       <BudgetPlanner/>
