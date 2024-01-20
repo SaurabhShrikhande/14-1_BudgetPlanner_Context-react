@@ -1,36 +1,40 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { UserContext } from "./UserContext";
 import './App.css';
 import { useEffect } from 'react';
 
 export default function BudgetPlanner(){
-  
+  const useref = useRef(null);
    let total = 0;
   function tot (){
+    let reference =  useref.current.value;
+    localStorage.setItem("lastbudget" , reference);
    total = 0;
     contxt.arr.map((item ) => {
           total = total + parseInt(item.cost);
     })      
-      contxt.setremaining(2000 - total);   //Reamaining
+      contxt.setremaining(reference - total);   //Reamaining
        contxt.setspant(total);
+       
   }
 
 
-  function spent(){
-
+  function budg (e){
+    contxt.setbudget(e.target.value);
+     tot();
   }
 
    const contxt = useContext(UserContext);
    useEffect(() => {
-    if (localStorage.length !== 0){
-      const data = JSON.parse(localStorage.getItem("localarr"));
-       contxt.setarr(data);
-       
-    }
-    // const data = JSON.parse(localStorage.getItem("localarr")); 
-    // if(data){
-    //  contxt.setarr(data);
+    // if (localStorage.length !== 0){
+    //   const data = JSON.parse(localStorage.getItem("localarr"));
+    //    contxt.setarr(data);
+  
     // }
+    const data = JSON.parse(localStorage.getItem("localarr")); 
+    if(data){
+     contxt.setarr(data);
+    }
 }, [])
 
     function addarr (){
@@ -38,7 +42,7 @@ export default function BudgetPlanner(){
            return alert("please Enter Name");
           }
           else{
-                contxt.setarr([...contxt.arr, {nm:contxt.inputnm, cost:contxt.inputcost }]);
+                contxt.setarr([...contxt.arr, {nm:contxt.inputnm, cost: parseInt(contxt.inputcost) }]);
                 contxt.setinputnm("");
                 contxt.setinputcost(0);
           }      
@@ -57,19 +61,20 @@ export default function BudgetPlanner(){
 
     useEffect(() => {
     if(contxt.arr.length !== 0)  localStorage.setItem("localarr" , JSON.stringify(contxt.arr));
+
      tot();
      
   }, [contxt.arr])
 
     return(<div style={{margin:"5vh 5vw"}}>
         <h1>Saurabh Shrikhande Budget Planner</h1>
-         {/* <label style={{fontSize:"20px"}}>Your Budget</label> 
-         <input style={{margin:"5px" , fontSize:"20px"}} type="number" onChange ={(e) => contxt.setbudget(e.target.value)} value={contxt.budget} required/>
-         */}
+         <label style={{fontSize:"20px"}}>Your Budget</label> 
+         <input ref = {useref} style={{margin:"5px" , fontSize:"20px"}} type="number" onChange ={budg} value={contxt.budget} required/>
+        
 
         <div style={{display:"flex", justifyContent:"space-between", width:""}}>
         {/* <h3 className="btn">Budget: Rs {contxt.budget}</h3> */}
-        <h3 className="btn">Budget: Rs 2000</h3>
+        <h3 className="btn">Budget: Rs {contxt.budget}</h3>
         <h3 className="btn" style={{color:"green"}}>Remaining Rs.
         {contxt.remaining}  </h3>
         <h3 className="btn" style={{color:"green" , backgroundColor:"#CFF4FC"}}>Spant far: {contxt.spant}</h3>
@@ -78,13 +83,10 @@ export default function BudgetPlanner(){
         <h3>Expenses</h3>
 
         {
-            true && <h3>Add Data To List....</h3>
+           (contxt.arr.length === 0) && <h3>Add Data To List....</h3>
         }
 
-        <div className="btn" style={{display:"flex" , justifyContent:"space-between" , padding:"0px 20px"}}>
-            <h4>Nm</h4>
-            <h4>Cost</h4>
-        </div>
+    
 
         {
           contxt.arr.map((item, idx)=>{

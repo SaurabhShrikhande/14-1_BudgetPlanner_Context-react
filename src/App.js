@@ -4,7 +4,18 @@ import BudgetPlanner from './Budgetplanner'
 import { useState } from 'react';
 
 function App() {
-   let [budget, setbudget ] = useState(2000);  
+    
+  function checklocalstorage (){
+   const data = localStorage.getItem("lastbudget"); 
+    if(data){
+     return data;
+    }
+    else {
+      return 2000;
+    }
+  }
+
+   let [budget, setbudget ] = useState(checklocalstorage());  
    let [remaining , setremaining] = useState(0);
    let [spant , setspant] = useState(0);
    let [inputnm , setinputnm] = useState("");
