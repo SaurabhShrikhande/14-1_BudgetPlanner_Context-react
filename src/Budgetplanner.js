@@ -12,10 +12,13 @@ export default function BudgetPlanner(){
    total = 0;
     contxt.arr.map((item ) => {
           total = total + parseInt(item.cost);
-    })      
-      contxt.setremaining(reference - total);   //Reamaining
+    })  
+    const ans = reference - total;    
+      contxt.setremaining(ans);   
        contxt.setspant(total);
-       
+       if ((reference - total) < 0){
+        alert("your budget is exceed")
+       }
   }
 
 
@@ -93,7 +96,7 @@ export default function BudgetPlanner(){
           return  (<div key={idx} className="btn" style={{display:"flex" , justifyContent:"space-between" , padding:"0px 20px", margin:"10px"}}>
             <h4>{item.nm}</h4>
             <div style={{display:"flex"}}>
-            <h4>{item.cost}</h4>
+            <h4 >{item.cost}</h4>
             <button style={{borderRadius:"20px", backgroundColor:"#6C757D", margin:"15px 5px" , color:"white"}} onClick={() => trim(idx)}>X</button>
             </div>
         </div>)    
