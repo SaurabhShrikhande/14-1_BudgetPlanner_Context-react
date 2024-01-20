@@ -5,13 +5,23 @@ import { useState } from 'react';
 
 function App() {
    let [budget, setbudget ] = useState(0);
+   let [inputnm , setinputnm] = useState("");
+   let [inputcost , setinputcost] = useState(0);
+   let [arr , setarr] = useState([]);
+
 
   return (
     <div className="">
 
      <UserContext.Provider value= {{
       budget,
-      setbudget
+      setbudget,
+      inputnm,
+      setinputnm,
+      inputcost,
+      setinputcost,
+      arr,
+      setarr
      }}>
       
       <BudgetPlanner/>
